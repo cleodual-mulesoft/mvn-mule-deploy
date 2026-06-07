@@ -16,15 +16,24 @@ jobs:
           distribution: temurin
           java-version: "17"
           cache: maven
+          
+          # This maps directly to the <id> anypoint-id in your pom.xml
           server-id: "anypoint-id"
-          server-username: "~~~Client~~~"
-          server-password: "4b3c316d01f14ce5813258d0105ffeed~?~4d0E9E3A93884c5Fb21Dcc6304b8750e"
+          
+          # Defines the names of the environment variables Maven will look for
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
 
       - name: Build Package
         run: mvn clean package
 
-      - name: Deploy Artifact
-        run: mvn deploy
-
-      - name: Deploy to Mule Runtime
-        run: mvn mule:deploy
+      # Runs your two local commands sequentially in the same shell environment
+      # without the debug flags (-X -e)
+      - name: Deploy to Exchange and Runtime
+        run: |
+          mvn deploy
+          mvn mule:deploy
+        env:
+          # Passes your GitHub Repository Secrets into the environment variables
+          MAVEN_USERNAME: "~~~Client~~~"
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
