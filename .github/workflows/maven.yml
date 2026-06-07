@@ -7,6 +7,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # Universal environment variables for all steps inside this job
+    env:
+      MAVEN_USERNAME: "~~~Client~~~"
+      MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -24,16 +29,14 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
 
+      # The global env is safely active here, but ignored since it's just compiling
       - name: Build Package
         run: mvn clean package
 
-      # Runs your two local commands sequentially in the same shell environment
-      # without the debug flags (-X -e)
-      - name: Deploy to Exchange and Runtime
-        run: |
-          mvn deploy
-          mvn mule:deploy
-        env:
-          # Passes your GitHub Repository Secrets into the environment variables
-          MAVEN_USERNAME: "~~~Client~~~"
-          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+      # Step 1: Inherits global MAVEN_USERNAME and MAVEN_PASSWORD
+      - name: Deploy to Exchange
+        run: mvn deploy
+
+      # Step 2: Also inherits global MAVEN_USERNAME and MAVEN_PASSWORD
+      - name: Deploy to Mule Runtime
+        run: mvn mule:deploy
