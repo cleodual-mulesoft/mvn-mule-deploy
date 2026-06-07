@@ -16,7 +16,7 @@ jobs:
           distribution: temurin
           java-version: "17"
           cache: maven
-          server-id: anypoint-id
+          server-id: "anypoint-id"
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
         env:
