@@ -30,4 +30,4 @@ jobs:
         run: mvn deploy
 
       - name: Deploy to Mule Runtime
-        run: mvn deploy -DmuleDeploy
+        run: mvn mule:deploy
