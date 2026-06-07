@@ -27,7 +27,7 @@ jobs:
         run: mvn clean package
 
       - name: Deploy Artifact
-        run: mvn deploy
+        run: mvn -X -e deploy
 
       - name: Deploy to Mule Runtime
         run: mvn mule:deploy
