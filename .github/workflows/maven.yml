@@ -18,13 +18,13 @@ jobs:
           cache: maven
           server-id: "anypoint-id"
           server-username: "~~~Client~~~"
-          server-password: ${{ secrets.MAVEN_PASSWORD }}
+          server-password: "4b3c316d01f14ce5813258d0105ffeed~?~4d0E9E3A93884c5Fb21Dcc6304b8750e"
 
       - name: Build Package
         run: mvn clean package
 
       - name: Deploy Artifact
-        run: mvn -X -e deploy
+        run: mvn deploy
 
       - name: Deploy to Mule Runtime
         run: mvn mule:deploy
